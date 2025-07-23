@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "hono": "npm:hono",
+    "mongoose": "npm:mongoose",
+    "axios": "npm:axios"
+  }
+}

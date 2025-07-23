@@ -1,10 +1,10 @@
-import { Hono } from 'hono'
+import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { bearerAuth } from "hono/bearer-auth";
 import { secureHeaders } from "hono/secure-headers";
 import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
-import { requestId } from 'hono/request-id'
+import { requestId } from "hono/request-id";
 import MedicineRouter from "./routes/medicine/index.ts";
 
 const TOKEN = Deno.env.get("API_KEY_BEARER_TOKEN") as string;
@@ -28,4 +28,4 @@ app.notFound((c) => {
   return c.json({ message: "not found" }, 404);
 });
 
-Deno.serve({ port: 5555 },app.fetch)
+Deno.serve({ port: 9558 }, app.fetch);

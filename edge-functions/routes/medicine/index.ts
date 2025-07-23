@@ -21,7 +21,7 @@ MedicineRouter.post("/searchMedicine", async (c) => {
     product: product,
   });
 
-  const hasErrorSearchProductStore = responseSearchProducts.error
+  const hasErrorSearchProductStore = responseSearchProducts?.error
     ? true
     : false;
 
@@ -29,7 +29,13 @@ MedicineRouter.post("/searchMedicine", async (c) => {
     return c.json({ message: message }, 500);
   }
 
-  return c.json({ data }, 200);
+  return c.json(
+    {
+      medicines: responseSearchProducts?.products,
+      lote: responseSearchProducts?.lote,
+    },
+    200
+  );
 });
 
 export default MedicineRouter;

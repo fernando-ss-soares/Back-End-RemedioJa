@@ -4,16 +4,19 @@ interface ParameterFunctionSearchProduct {
 }
 
 interface ReturnFunctionSearchProduct {
-    products?: Array<DetailsProducts> | null | undefined;
+    products?: Array<DetailsProducts> | null | undefined | boolean | string;
     error: boolean;
+    lote: string | null | undefined | boolean;
     message: null | string;
 }
 
 type DetailsProducts = {
-    name: string | null;
-    description: string | null;
-    value: number | null;
-    image: string | null;
+    lote?: string | null,
+    title?: string | null,
+    description?: string | null,
+    value?: number | null,
+    images?: any[] | null,
+    link?: string | null,
 }
 
 export type {

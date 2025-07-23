@@ -3,7 +3,6 @@ import {
   ReturnFunctionVerifyStore,
 } from "../../types/functions/verifyStore/index.ts";
 
-
 export default function verifyStore({
   store,
 }: ParameterFunctionVerifyStore): ReturnFunctionVerifyStore {

@@ -2,8 +2,7 @@ import {
   ParameterFunctionSearchProduct,
   ReturnFunctionSearchProduct,
 } from "../../types/functions/searchProduct/index.ts";
-
-import ScrapingAraia from "../scraping/araia/index.ts";
+import { Scraping, FindLote } from "../scraping/araia/index.ts";
 
 export default async function searchProduct({
   product,
@@ -12,18 +11,36 @@ export default async function searchProduct({
   const Store = store;
   const Product = product;
 
-  if (Store == "araia") {
-    const scraping = await ScrapingAraia({ product: Product });
+  if (Store) {
+    const { lote } = await Scraping({ product: Product });
+
+    if (lote == null) {
+      return {
+        products: null,
+        lote: false,
+        error: true,
+        message:
+          "Error not was possible found it lote in database. Please try again more late",
+      };
+    }
+
+    const { medicines } = await FindLote({ lote: lote });
+
+    const hasMedicines = medicines
+      ? medicines
+      : "Error not was possible found it lote in database. Please try again more late";
 
     return {
-      products: scraping,
+      products: hasMedicines,
+      lote: lote,
       error: false,
       message: null,
     };
   }
-  
+
   return {
     products: null,
+    lote: false,
     error: true,
     message:
       "Not was possible found it product in store. Please try again more late",
