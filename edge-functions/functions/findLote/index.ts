@@ -1,0 +1,35 @@
+import mongoose from "mongoose";
+import MedicineSchema from "../../model/schemas/index.ts";
+import { ParametersQueriesGetLoteMedicine } from "../../types/functions/index.ts";
+import configStore from "../scraping/araia/config.ts";
+
+export async function GetLoteMedicine({
+  lote,
+}: ParametersQueriesGetLoteMedicine) {
+  try {
+    await mongoose.connect(configStore.db.connection);
+
+    if (mongoose.connection.readyState) {
+      const Medicine = await MedicineSchema.find(
+        { lote: lote },
+        {
+          title: true,
+          description: true,
+          images: true,
+          link: true,
+          value: true,
+          date: true,
+        }
+      );
+      return Medicine;
+    }
+
+    await mongoose.disconnect();
+  } catch (error) {
+    console.error(
+      "Medicine not was insert medicines in database. Please try again more late",
+      error
+    );
+    await mongoose.disconnect();
+  }
+}

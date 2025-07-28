@@ -3,6 +3,10 @@ interface ParametersQueriesMedicine {
   product?: string;
 }
 
+interface ParametersQueriesGetLoteMedicine {
+  lote?: string | undefined;
+}
+
 interface ParameterFunctionScrapingMedicine {
   product: string | null;
 }
@@ -29,4 +33,5 @@ export type {
   ParameterFunctionScrapingMedicine,
   ParameterFunctionFindLote,
   ReturnFunctionFindLote,
+  ParametersQueriesGetLoteMedicine
 };

@@ -5,7 +5,7 @@ import { secureHeaders } from "hono/secure-headers";
 import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
 import { requestId } from "hono/request-id";
-import MedicineRouter from "./routes/medicine/index.ts";
+import { MedicineRouter, GetloteMedicineRouter } from "./routes/medicine/index.ts";
 
 const TOKEN = Deno.env.get("API_KEY_BEARER_TOKEN") as string;
 
@@ -22,7 +22,9 @@ app.use("*", secureHeaders());
 
 app.use("/medicine/*", bearerAuth({ token: TOKEN }));
 
-app.route("/medicine", MedicineRouter);
+app.route("/medicine/save", MedicineRouter);
+
+app.route("/medicine/get", GetloteMedicineRouter);
 
 app.notFound((c) => {
   return c.json({ message: "not found" }, 404);

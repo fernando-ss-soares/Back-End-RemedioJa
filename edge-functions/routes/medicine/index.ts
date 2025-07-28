@@ -1,9 +1,23 @@
 import { Hono } from "hono";
-import { ParametersQueriesMedicine } from "../../types/functions/index.ts";
+import { ParametersQueriesGetLoteMedicine, ParametersQueriesMedicine } from "../../types/functions/index.ts";
 import verifyStore from "../../functions/verifyStore/index.ts";
 import searchProduct from "../../functions/searchProduct/index.ts";
+import { GetLoteMedicine } from "../../functions/findLote/index.ts";
 
 const MedicineRouter = new Hono();
+const GetloteMedicineRouter = new Hono();
+
+GetloteMedicineRouter.post("/searchLote", async (c) => {
+
+  const { lote }: ParametersQueriesGetLoteMedicine = c.req.query();
+
+  const loteMedicine = await GetLoteMedicine({ lote: lote })
+
+  return c.json(
+    loteMedicine,
+    200
+  );
+});
 
 MedicineRouter.post("/searchMedicine", async (c) => {
   const { store, product }: ParametersQueriesMedicine = c.req.query();
@@ -38,4 +52,7 @@ MedicineRouter.post("/searchMedicine", async (c) => {
   );
 });
 
-export default MedicineRouter;
+export {
+  MedicineRouter,
+  GetloteMedicineRouter
+};
