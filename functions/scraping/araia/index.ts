@@ -45,10 +45,10 @@ export async function FindLote({ lote }: ParameterFunctionFindLote) {
 export async function Scraping({ product }: ParameterFunctionScrapingMedicine) {
   const customUA = configStore.customUA;
 
-  const browser = await puppeteer.launch({
-    headless: configStore.headless,
-    executablePath: configStore.executablePath,
-    args: configStore.args
+  // Conectando-se ao browserless via WebSocket
+  const browser = await puppeteer.connect({
+    browserWSEndpoint: configStore.browserlessWSEndpoint,
+    acceptInsecureCerts: true
   });
 
   const selectorLinksMedicine = configStore.selectors.list;
@@ -65,7 +65,7 @@ export async function Scraping({ product }: ParameterFunctionScrapingMedicine) {
 
   const page = await browser.newPage();
   await page.setUserAgent(customUA);
-  await page.goto(`${configStore.webStore}${product}`);
+  await page.goto(`${configStore.webStore}${product}`, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector(selectorLinksMedicine, { timeout: 10000 });
 
   const collectionLinksMedicine = await page.$$eval(
@@ -73,28 +73,20 @@ export async function Scraping({ product }: ParameterFunctionScrapingMedicine) {
     (el) => el.map((element) => element.href)
   );
 
-  for (const linkMedicine of collectionLinksMedicine.slice(0,10)) {
+  for (const linkMedicine of collectionLinksMedicine.slice(0, 10)) {
     try {
-      await page.goto(linkMedicine);
+      await page.goto(linkMedicine, { waitUntil: 'domcontentloaded' });
 
       await page.waitForSelector(selectorInfoMedicine.await);
 
-      const infoTitleMedicine = (await page.$eval(
-        selectorInfoMedicine.title,
-        (el) => el.textContent
-      )) as string;
-      const infoValueMedicine = (await page.$eval(
-        selectorInfoMedicine.value,
-        (el) => el.textContent.substring(3, el.length).replace(",", ".")
-      )) as string;
-      const infoDescriptionMedicine = (await page.$eval(
-        selectorInfoMedicine.description,
-        (el) => el.innerText
-      )) as string;
-      const infoImagesMedicine = (await page.$$eval(
-        selectorInfoMedicine.images,
-        (el) => el.map((element) => element.href)
-      )) as string[];
+      const infoTitleMedicine = await page.$eval(selectorInfoMedicine.title, el => el.textContent);
+      const infoValueMedicine = await page.$eval(selectorInfoMedicine.value, el =>
+        el.textContent?.substring(3).replace(",", ".")
+      );
+      const infoDescriptionMedicine = await page.$eval(selectorInfoMedicine.description, el => el.innerText);
+      const infoImagesMedicine = await page.$$eval(selectorInfoMedicine.images, el =>
+        el.map((element) => element.href)
+      );
 
       collectionInfoMedicines.push({
         title: infoTitleMedicine,
@@ -103,11 +95,10 @@ export async function Scraping({ product }: ParameterFunctionScrapingMedicine) {
         description: infoDescriptionMedicine,
         images: infoImagesMedicine,
         link: linkMedicine,
-        search: product
+        search: product,
       });
     } catch (error) {
-      await page.goto(linkMedicine);
-      console.error("Medicine not found or frame was not found", error);
+      console.error("Erro ao acessar o link do medicamento:", error);
     }
   }
 
@@ -119,7 +110,7 @@ export async function Scraping({ product }: ParameterFunctionScrapingMedicine) {
 
       if (Medicine && Medicine.length > 0) {
         await mongoose.disconnect();
-        await browser.close();
+        await browser.disconnect();
         return {
           lote: collectionInfoMedcinesLote,
         };
@@ -127,19 +118,13 @@ export async function Scraping({ product }: ParameterFunctionScrapingMedicine) {
     }
 
     await mongoose.disconnect();
-    await browser.close();
+    await browser.disconnect();
   } catch (error) {
-    console.error(
-      "Medicine not was insert medicines in database. Please try again more late",
-      error
-    );
+    console.error("Erro ao salvar no banco:", error);
     await mongoose.disconnect();
-    await browser.close();
+    await browser.disconnect();
   }
 
-  await browser.close();
-
-  return {
-    lote: null,
-  };
+  await browser.disconnect();
+  return { lote: null };
 }

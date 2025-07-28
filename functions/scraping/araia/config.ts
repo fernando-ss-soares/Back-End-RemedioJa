@@ -1,5 +1,6 @@
 const configStore = {
   headless: true,
+  browserlessWSEndpoint: "wss://labs.beepcore.com.br?token=Y6zoj7a2M3QkvCbOXwNKaVoSEDw2ReBb",
   customUA:
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
   executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
