@@ -1,7 +1,7 @@
 import {
   ParameterFunctionVerifyStore,
   ReturnFunctionVerifyStore,
-} from "../../types/functions/verifyStore/index.ts";
+} from "../../../types/functions/medicine/verifyStore/index.ts";
 
 export default function verifyStore({
   store,

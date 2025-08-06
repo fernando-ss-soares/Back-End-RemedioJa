@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import MedicineSchema from "../../model/schemas/index.ts";
-import { ParametersQueriesGetLoteMedicine } from "../../types/functions/index.ts";
-import configStore from "../scraping/araia/config.ts";
+import MedicineSchema from "../../../models/schemas/medicine/index.ts";
+import { ParametersQueriesGetLoteMedicine } from "../../../types/functions/medicine/index.ts";
+import configStore from "../araia/config.ts";
 
 export async function GetLoteMedicine({
   lote,

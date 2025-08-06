@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import {
   ParameterFunctionFindLote,
   ParameterFunctionScrapingMedicine,
-} from "../../../types/functions/index.ts";
+} from "../../../types/functions/medicine/index.ts";
 import configStore from "./config.ts";
-import MedicineSchema from "../../../model/schemas/index.ts";
+import MedicineSchema from "../../../models/schemas/medicine/index.ts";
 
 export async function FindLote({ lote }: ParameterFunctionFindLote) {
   try {

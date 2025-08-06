@@ -1,8 +1,8 @@
 import {
   ParameterFunctionSearchProduct,
   ReturnFunctionSearchProduct,
-} from "../../types/functions/searchProduct/index.ts";
-import { Scraping, FindLote } from "../scraping/araia/index.ts";
+} from "../../../types/functions/medicine/searchProduct/index.ts";
+import { Scraping, FindLote } from "../../medicine/araia/index.ts";
 
 export default async function searchProduct({
   product,
