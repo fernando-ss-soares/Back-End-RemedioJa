@@ -9,7 +9,7 @@ import { MedicineRouter, GetloteMedicineRouter } from "./routes/medicine/index.t
 
 const TOKEN = Deno.env.get("API_KEY_BEARER_TOKEN") as string;
 
-const functionName = "health";
+const functionName = "labs";
 const app = new Hono().basePath(`/${functionName}`);
 
 app.use("*", csrf());
