@@ -11,7 +11,10 @@ export const MedicineController = {
 
     const loteMedicine = await GetLoteMedicine({ lote: lote });
 
-    return c.json(loteMedicine, 200);
+    return c.json({
+      loteMedicine,
+      requestId: `${c.get('requestId')}`
+    }, 200);
   },
   async searchMedicine(c: Context) {
     const { store, product }: ParametersQueriesMedicine = c.req.query();
@@ -41,6 +44,7 @@ export const MedicineController = {
       {
         medicines: responseSearchProducts?.products,
         lote: responseSearchProducts?.lote,
+        requestId: `${c.get('requestId')}`
       },
       200
     );
