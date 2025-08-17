@@ -13,12 +13,12 @@ const configStore = {
   ],
   webStore: "https://www.drogaraia.com.br/search?w=",
   selectors: {
-    list: "div.sc-b4b962d1-3.ihDJej.vertical > div > a",
+    list: "div.sc-c27b45ec-9.cEyotn > article > div > *.vertical > a",
     await: "main.sc-fb961b56-0.fxOotZ",
     title: "h1.sc-2aea4133-1.cbMvkL",
-    value: "span.sc-fd6fe09f-0.jRRyrf.price-pdp-content",
+    value: "#pdp-price-with-select-wrapper > div > span",
     description: "div#product-details.sc-b66ae18c-0.kxeiwW",
-    images: "a.gallery-item",
+    images: "img.main.image",
   },
   db: {
     connection: Deno.env.get("URI_DB") as string,
