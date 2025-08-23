@@ -1,8 +1,7 @@
 import { Context } from "hono";
 import { ParametersQueriesGetLoteMedicine, ParametersQueriesMedicine } from "../../types/functions/medicine/index.ts";
-
 import { GetLoteMedicine } from "../../functions/medicine/findLote/index.ts";
-import searchProduct from "../../functions/medicine/searchProduct/index.ts";
+import { ScrapeController } from "../scrape/index.ts";
 
 export const MedicineController = {
   async searchLote(c: Context) {
@@ -18,7 +17,7 @@ export const MedicineController = {
   async searchMedicine(c: Context) {
     const { product }: ParametersQueriesMedicine = c.req.query();
 
-    const lote = await searchProduct({ product: product });
+    const lote = await ScrapeController.save({ product: product });
 
     return c.json(
       {

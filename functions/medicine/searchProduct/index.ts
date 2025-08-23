@@ -10,7 +10,5 @@ export default async function searchProduct({
 
   const { lote } = await Scraping({ product: Product });
 
-  console.log(lote);
-
   return lote;
 }

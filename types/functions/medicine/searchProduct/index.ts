@@ -39,6 +39,7 @@ interface Result {
 
 type ParametersCatchInfoMedicine = {
   listMedicine: Array<{ name: string; value: string }>;
+  lote: string;
 }
 
 interface ReturnAPIBrowserlessInfoMedicine {
