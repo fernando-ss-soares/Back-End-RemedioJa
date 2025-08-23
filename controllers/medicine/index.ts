@@ -3,7 +3,6 @@ import { ParametersQueriesGetLoteMedicine, ParametersQueriesMedicine } from "../
 
 import { GetLoteMedicine } from "../../functions/medicine/findLote/index.ts";
 import searchProduct from "../../functions/medicine/searchProduct/index.ts";
-import verifyStore from "../../functions/medicine/verifyStore/index.ts";
 
 export const MedicineController = {
   async searchLote(c: Context) {
@@ -17,33 +16,13 @@ export const MedicineController = {
     }, 200);
   },
   async searchMedicine(c: Context) {
-    const { store, product }: ParametersQueriesMedicine = c.req.query();
+    const { product }: ParametersQueriesMedicine = c.req.query();
 
-    const { data, error, message } = verifyStore({ store: store });
-
-    const hasErrorVerifyStore = error ? true : false;
-
-    if (hasErrorVerifyStore) {
-      return c.json({ message: message }, 500);
-    }
-
-    const responseSearchProducts = await searchProduct({
-      store: data?.store,
-      product: product,
-    });
-
-    const hasErrorSearchProductStore = responseSearchProducts?.error
-      ? true
-      : false;
-
-    if (hasErrorSearchProductStore) {
-      return c.json({ message: message }, 500);
-    }
+    const lote = await searchProduct({ product: product });
 
     return c.json(
       {
-        medicines: responseSearchProducts?.products,
-        lote: responseSearchProducts?.lote,
+        lote: lote,
         requestId: `${c.get('requestId')}`
       },
       200

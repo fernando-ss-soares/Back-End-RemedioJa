@@ -1,5 +1,4 @@
 interface ParametersQueriesMedicine {
-  store?: string;
   product?: string;
 }
 
