@@ -7,10 +7,10 @@ export const MedicineController = {
   async searchLote(c: Context) {
     const { lote }: ParametersQueriesGetLoteMedicine = c.req.query();
 
-    const loteMedicine = await GetLoteMedicine({ lote: lote });
+    const Medicines = await ScrapeController.find({ lote: lote });
 
     return c.json({
-      loteMedicine,
+      Medicines,
       requestId: `${c.get('requestId')}`
     }, 200);
   },

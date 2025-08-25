@@ -25,11 +25,8 @@ export async function GetLoteMedicine({
     }
 
     await mongoose.disconnect();
-  } catch (error) {
-    console.error(
-      "Medicine not was insert medicines in database. Please try again more late",
-      error
-    );
+  } catch {
     await mongoose.disconnect();
+    throw new Error("Erro ao recuperar o lote.");
   }
 }
